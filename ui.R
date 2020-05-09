@@ -8,11 +8,9 @@ shinyUI(pageWithSidebar(
   
   # Sidebar with a slider input for number of observations
   sidebarPanel(
-    sliderInput("obs", 
-                "Number of observations:", 
-                min = 1,
-                max = 1000, 
-                value = 500)
+    textInput("search_keyword", h3("Trend search"), 
+              value = ""),
+    actionButton("button", "Search")
   ),
   
   # Show a plot of the generated distribution
