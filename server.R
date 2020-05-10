@@ -2,6 +2,7 @@ library(shiny)
 library(gtrendsR)
 library(tidyverse)
 library(dplyr)
+library(patchwork)
 
 shinyServer(function(input, output) {
   
@@ -40,13 +41,11 @@ shinyServer(function(input, output) {
   
   
   
-  output$gPlot <- renderPlot({
-    plot_gt(search_terms$dList)
-  }, height = 400)
-  
-  output$tPlot <- renderPlot({
-    plot_twitter(search_terms$dList)
-  }, height = 400)
+  output$outPlot <- renderPlot({
+    p_gt <- plot_gt(search_terms$dList)
+    p_t <- plot_twitter(search_terms$dList)
+    p_gt/p_t
+  }, height = 500)
   
   twittertrends <- function(keywords) {
     if (!exists('tweets')) {
@@ -103,17 +102,18 @@ shinyServer(function(input, output) {
     gt_results <- gtrends(keyword = terms, time = time, geo = geo)
     
     if (!exists('covid_counts')) {
-      covid_counts <- read.csv('covid.csv') %>%
+      covid_counts <<- read.csv('covid.csv') %>%
         mutate(
           Date = as.Date(Date, format = '%m/%d/%y')
         )
-      names(covid_counts) <- c('date','cases','deaths','us_deaths','n_countries')
     }
+    names(covid_counts) <- c('date','cases','deaths','us_deaths','n_countries')
     
     google_data <- gt_results$interest_over_time
-    google_data$hits[gt_results$interest_over_time$hits == "<1"] <- 0
-    google_data$hits <- as.numeric(gt_results$interest_over_time$hits)
-    google_data$date <- as.Date(gt_results$interest_over_time$date)
+    google_data$hits[google_data$hits == "<1"] <- 0
+    google_data$hits[is.na(google_data$hits)] <- 0
+    google_data$hits <- as.numeric(google_data$hits)
+    google_data$date <- as.Date(google_data$date)
     
     google_data <- google_data %>% 
       select(date, hits, keyword) %>%
