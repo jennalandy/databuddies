@@ -126,6 +126,30 @@ get_sample_tweet_ids <- function(perc = 0.01) {
   saveRDS(data, "twitter_ids.RData")
 }
 
-get_sample_tweet_ids()
+#get_sample_tweet_ids()
 
-count_tweet_ids()
+#count_tweet_ids()
+  
+setwd('projects/datafest2020/databuddies')
+counts <- read.csv('twitter_counts.csv')
+covid <- read.csv('covid.csv')
+
+daily_counts <- counts %>%
+  mutate(date = as.Date(date)) %>%
+  group_by(date) %>%
+  summarize(n_tweets = sum(n_tweets)) %>%
+  arrange(date) %>%
+  mutate(cumulative_n_tweets = cumsum(n_tweets))
+
+first_us_case <- as.Date('2020-01-21')
+first_us_death <- as.Date('2020-02-29')
+us_national_emergency <- as.Date('2020-03-13')
+first_us_shelter <- as.Date('2020-03-17')
+
+library(ggplot2)
+ggplot(daily_counts, aes(x = date, y = n_tweets)) + 
+  geom_line() +
+  geom_vline(xintercept = first_us_case, color = 'red') +
+  geom_vline(xintercept = first_us_death, color = 'red') +
+  geom_vline(xintercept = first_us_shelter, color = 'red')
+>>>>>>> cbdb76792b8b6c81a529090ccb55694b8300c06d
