@@ -1,4 +1,7 @@
+tweets/*
 .DS_Store
+*tweets.jsonl
+*.RData
 
 # History files
 .Rhistory

@@ -83,7 +83,7 @@ get_sample_tweet_ids <- function(perc = 0.01) {
   
   start <- Sys.time()
 
-  while (f < length(filelist)) {
+  while (f <= length(filelist)) {
     file <- filelist[f]
     date <- str_extract(file, '2020-[0-9]{2}-[0-9]{2}')
     file_url <- paste(
@@ -93,19 +93,23 @@ get_sample_tweet_ids <- function(perc = 0.01) {
     )
     
     dat <- GET(file_url)
+    
     tweet_ids <- dat$content %>%
       rawToChar() %>%
       toJSON() %>%
       str_extract_all('[0-9]+') %>%
       unlist()
+    
+    n_sample <- round(perc*length(tweet_ids))
+    if (n_sample == 0) {n_sample <- 1}
     sample_tweet_ids <- sample(
       tweet_ids, 
-      round(perc*length(tweet_ids))
+      n_sample
     )
     
     data[[file]] <- list(
       "date" = date,
-      "tweet_ids" = tweet_ids
+      "tweet_ids" = sample_tweet_ids
     )
     
     if (f%%10 == 0) {
@@ -119,28 +123,9 @@ get_sample_tweet_ids <- function(perc = 0.01) {
     }
     f <- f + 1
   }
+  saveRDS(data, "twitter_ids.RData")
 }
 
 get_sample_tweet_ids()
 
 count_tweet_ids()
-  
-counts <- read.csv('twitter_counts.csv')
-daily_counts <- counts %>%
-  mutate(date = as.Date(date)) %>%
-  group_by(date) %>%
-  summarize(n_tweets = sum(n_tweets)) %>%
-  arrange(date) %>%
-  mutate(cumulative_n_tweets = cumsum(n_tweets))
-
-first_us_case <- as.Date('2020-01-21')
-first_us_death <- as.Date('2020-02-29')
-us_national_emergency <- as.Date('2020-03-13')
-first_us_shelter <- as.Date('2020-03-17')
-
-library(ggplot2)
-ggplot(daily_counts, aes(x = date, y = n_tweets)) + 
-  geom_line() +
-  geom_vline(xintercept = first_us_case, color = 'red') +
-  geom_vline(xintercept = first_us_death, color = 'red') +
-  geom_vline(xintercept = first_us_shelter, color = 'red')
