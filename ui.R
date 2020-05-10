@@ -13,7 +13,8 @@ shinyUI(pageWithSidebar(
   ),
   
   mainPanel(
-    plotOutput("exPlot"),
+    plotOutput("gPlot"),
+    plotOutput("tPlot"),
     textOutput("test")
   )
 ))
