@@ -15,7 +15,7 @@ navbarPage(list(img(src="databuddiesmedium.png"),
                            .navbar {min-height:150px !important;}')))),
   
   # Trends panel
-  tabPanel(p("Trends", style ="padding-top:50px;font-size:25px"),
+  tabPanel(p("Trends", style ="padding-top:55px;font-size:25px"),
            
            sidebarPanel(
              textInput("search_keyword", h3("Trend search"), 
@@ -32,6 +32,6 @@ navbarPage(list(img(src="databuddiesmedium.png"),
            )),
   
   # About panel
-  tabPanel(p("About", style ="padding-top:50px;font-size:25px")),
+  tabPanel(p("About", style ="padding-top:55px;font-size:25px")),
   theme = shinytheme("darkly")
 )
