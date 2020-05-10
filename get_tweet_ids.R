@@ -83,7 +83,7 @@ get_sample_tweet_ids <- function(perc = 0.01) {
   
   start <- Sys.time()
 
-  while (f < length(filelist)) {
+  while (f <= length(filelist)) {
     file <- filelist[f]
     date <- str_extract(file, '2020-[0-9]{2}-[0-9]{2}')
     file_url <- paste(
@@ -93,19 +93,23 @@ get_sample_tweet_ids <- function(perc = 0.01) {
     )
     
     dat <- GET(file_url)
+    
     tweet_ids <- dat$content %>%
       rawToChar() %>%
       toJSON() %>%
       str_extract_all('[0-9]+') %>%
       unlist()
+    
+    n_sample <- round(perc*length(tweet_ids))
+    if (n_sample == 0) {n_sample <- 1}
     sample_tweet_ids <- sample(
       tweet_ids, 
-      round(perc*length(tweet_ids))
+      n_sample
     )
     
     data[[file]] <- list(
       "date" = date,
-      "tweet_ids" = tweet_ids
+      "tweet_ids" = sample_tweet_ids
     )
     
     if (f%%10 == 0) {
@@ -119,6 +123,7 @@ get_sample_tweet_ids <- function(perc = 0.01) {
     }
     f <- f + 1
   }
+  saveRDS(data, "twitter_ids.RData")
 }
 
 #get_sample_tweet_ids()
