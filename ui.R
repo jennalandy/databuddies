@@ -1,8 +1,10 @@
+
 library(shiny)
 library(shinythemes)
 library(tidyverse)
 library(shinycustomloader)
 
+# Navbar header with image
 navbarPage(list(img(src="databuddiesmedium.png"),
             tags$head(
               tags$style(HTML('.navbar-nav > li > a, .navbar-brand {
@@ -11,9 +13,10 @@ navbarPage(list(img(src="databuddiesmedium.png"),
                             height: 150px;
                             }
                            .navbar {min-height:150px !important;}')))),
-  # Define UI for application that plots random distributions 
   
+  # Trends panel
   tabPanel(p("Trends", style ="padding-top:50px;font-size:25px"),
+           
            sidebarPanel(
              textInput("search_keyword", h3("Trend search"), 
                        value = ""),
@@ -23,10 +26,12 @@ navbarPage(list(img(src="databuddiesmedium.png"),
            ),
            
            mainPanel(
-             withLoader(plotOutput("exPlot"), type="image", loader="google.gif"),
+             # Loads panel with gif
+             withLoader(plotOutput("outPlot"), type="image", loader="google.gif"),
              textOutput("test")
            )),
   
+  # About panel
   tabPanel(p("About", style ="padding-top:50px;font-size:25px")),
   theme = shinytheme("darkly")
 )

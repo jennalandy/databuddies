@@ -2,6 +2,7 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 
+
 get_phrase_counts <- function(tweets, phrases, neg_phrases = '') {
   check_for <- paste(phrases, collapse = '|')
   check_against <- paste(neg_phrases, collapse = '|')
@@ -127,17 +128,15 @@ plot_over_time <- function(phrase, neg_phrase = '', sig_dates = FALSE) {
   p
 }
 
-plot_over_time(c('trump','president','donald'))
+plot_over_time(c('coronavirus'))
+# 
+# plot_over_time(c('joe','biden'))
+# 
+# plot_over_time(c('cdc'))
+# 
+# plot_over_time(c('shelter','home'))
+# 
+# plot_over_time(c('chinese virus'))
 
-plot_over_time(c('joe','biden'))
 
-plot_over_time(c('cdc'))
-
-plot_over_time(c('shelter','home'))
-
-plot_over_time(c('chinese virus'))
-
-plot_over_time(c('democrat'))
-
-plot_over_time(c('republican'))
 
