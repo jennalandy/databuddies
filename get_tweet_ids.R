@@ -121,11 +121,14 @@ get_sample_tweet_ids <- function(perc = 0.01) {
   }
 }
 
-get_sample_tweet_ids()
+#get_sample_tweet_ids()
 
-count_tweet_ids()
+#count_tweet_ids()
   
+setwd('projects/datafest2020/databuddies')
 counts <- read.csv('twitter_counts.csv')
+covid <- read.csv('covid.csv')
+
 daily_counts <- counts %>%
   mutate(date = as.Date(date)) %>%
   group_by(date) %>%
