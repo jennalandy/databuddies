@@ -152,4 +152,3 @@ ggplot(daily_counts, aes(x = date, y = n_tweets)) +
   geom_vline(xintercept = first_us_case, color = 'red') +
   geom_vline(xintercept = first_us_death, color = 'red') +
   geom_vline(xintercept = first_us_shelter, color = 'red')
->>>>>>> cbdb76792b8b6c81a529090ccb55694b8300c06d
