@@ -1,5 +1,6 @@
 library(shiny)
 library(gtrendsR)
+library(tidyverse)
 
 shinyServer(function(input, output) {
   
