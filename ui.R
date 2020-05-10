@@ -1,20 +1,19 @@
 library(shiny)
 
-# Define UI for application that plots random distributions 
 shinyUI(pageWithSidebar(
   
-  # Application title
   headerPanel("Data Buddies Fuck Shit Up"),
   
-  # Sidebar with a slider input for number of observations
   sidebarPanel(
     textInput("search_keyword", h3("Trend search"), 
               value = ""),
-    actionButton("button", "Search")
+    actionButton("plotbutton", "Plot!"),
+    actionButton("addbutton", "Add search term"),
+    tags$div(id='inputList')
   ),
   
-  # Show a plot of the generated distribution
   mainPanel(
-    plotOutput("exPlot")
+    plotOutput("exPlot"),
+    textOutput("test")
   )
 ))

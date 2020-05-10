@@ -1,23 +1,51 @@
 library(shiny)
 library(gtrendsR)
 
-# Define server logic required to generate and plot a random distribution
 shinyServer(function(input, output) {
   
   
-  search_terms <- eventReactive(input$button, {
-    if (input$search_keyword != ""){
-      c("coronavirus", input$search_keyword)
-    } else {
-      c("coronavirus")
+  observeEvent(input$addbutton, {
+    nr <- input$addbutton
+    id <- paste0("input",input$addbutton)
+    insertUI(
+      selector = '#inputList',
+      ui=div(
+        id = paste0("newInput",nr),
+        textInput(
+          inputId = id,
+          label = "Input"
+        ),
+        actionButton(paste0('removeBtn',nr), 'Remove')
+      )
+    )
+    observeEvent(input[[paste0('removeBtn',nr)]],{
+      shiny::removeUI(
+        selector = paste0("#newInput",nr)
+      )
+    })
+    
+  })
+  
+  search_terms <- reactiveValues()
+  observe({
+    if (input$plotbutton == 0) {
+      search_terms$dList <- c("coronavirus")
     }
-  }, ignoreNULL = F)
+    if(input$plotbutton > 0){
+      search_terms$dList <- unique(c(isolate(search_terms$dList), isolate(input$search_keyword)))
+    }
+  })
+  
+  
   
   output$exPlot <- renderPlot({
-    plot_gt(search_terms())
+    plot_gt(search_terms$dList)
   })
   
   plot_gt <- function(terms, time = "today 3-m", geo = "US") {
+    terms <- unique(trimws(terms))
+    terms <- terms[terms != ""]
+    
     gt_results <- gtrends(keyword = terms, time = time, geo = geo)
     
     gt_results$interest_over_time$hits[gt_results$interest_over_time$hits == "<1"] <- 0
