@@ -27,7 +27,7 @@ navbarPage(list(img(src="databuddiesmedium.png"),
            
            mainPanel(
              # Loads panel with gif
-             withLoader(plotOutput("outPlot"), type="image", loader="google.gif"),
+             withLoader(plotOutput("outPlot"), type="html", loader="loader3"),
              textOutput("test")
            )),
   
