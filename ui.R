@@ -32,6 +32,8 @@ navbarPage(list(img(src="databuddiesmedium.png"),
            )),
   
   # About panel
-  tabPanel(p("About", style ="padding-top:55px;font-size:25px")),
+  tabPanel(p("About", style ="padding-top:55px;font-size:25px"),
+           mainPanel(
+             img(src="grouppic.png", style="padding:50px"))),
   theme = shinytheme("darkly")
 )
