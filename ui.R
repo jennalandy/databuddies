@@ -4,6 +4,8 @@ library(shinythemes)
 library(tidyverse)
 library(shinycustomloader)
 
+
+
 # Navbar header with image
 navbarPage(list(img(src="databuddiesmedium.png"),
             tags$head(

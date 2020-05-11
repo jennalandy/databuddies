@@ -101,7 +101,11 @@ shinyServer(function(input, output) {
       geom_line(size = 1.5) +
       labs(title = 'Trends in COVID Related Tweets') +
       xlim(c(as.Date('2020-01-21'), as.Date('2020-05-06'))) +
-      theme_dark()
+      scale_color_manual(values = c("#bf9cf9", "#00ffd8", "#4998d4")) +
+      theme_dark() + theme(plot.background = element_rect(fill = "#303030"), 
+                           text = element_text(color = "white"),
+                           legend.background = element_rect(fill = "#303030"),
+                           axis.text = element_text(color = "#c2c2c2"))
   }
   
   plot_gt <- function(terms, time = "today 3-m", geo = "US") {
@@ -137,7 +141,11 @@ shinyServer(function(input, output) {
         geom_line(size = 1.5) +
         labs(title = 'Trends in Google Searches') +
         xlim(c(as.Date('2020-01-21'), as.Date('2020-05-06'))) +
-        theme_dark()
+        scale_color_manual(values = c("#bf9cf9", "#00ffd8", "#4998d4")) +
+        theme_dark() + theme(plot.background = element_rect(fill = "#303030"), 
+                             text = element_text(color = "white"),
+                             legend.background = element_rect(fill = "#303030"),
+                             axis.text = element_text(color = "#c2c2c2"))
     
     plot
   }
