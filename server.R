@@ -3,47 +3,55 @@ library(gtrendsR)
 library(tidyverse)
 library(dplyr)
 library(patchwork)
+library(tidyr)
 
 shinyServer(function(input, output) {
   
   
-  observeEvent(input$addbutton, {
-    nr <- input$addbutton
-    id <- paste0("input",input$addbutton)
-    insertUI(
-      selector = '#inputList',
-      ui=div(
-        id = paste0("newInput",nr),
-        textInput(
-          inputId = id,
-          label = "Input"
-        ),
-        actionButton(paste0('removeBtn',nr), 'Remove')
-      )
-    )
-    observeEvent(input[[paste0('removeBtn',nr)]],{
-      shiny::removeUI(
-        selector = paste0("#newInput",nr)
-      )
-    })
+  #observeEvent(input$addbutton, {
+  #  nr <- input$addbutton
+  #  id <- paste0("input",input$addbutton)
+  #  insertUI(
+  #    selector = '#inputList',
+  #    ui=div(
+  #      id = paste0("newInput",nr),
+  #      textInput(
+  #        inputId = id,
+  #        label = "Input"
+  #      ),
+  #      actionButton(paste0('removeBtn',nr), 'Remove')
+  #    )
+  #  )
+  #  observeEvent(input[[paste0('removeBtn',nr)]],{
+  #    shiny::removeUI(
+  #      selector = paste0("#newInput",nr)
+  #    )
+  #  })
     
-  })
+  #})
   
-  search_terms <- reactiveValues()
-  observe({
-    if (input$plotbutton == 0) {
-      search_terms$dList <- c("coronavirus")
-    }
-    if(input$plotbutton > 0){
-      search_terms$dList <- unique(c(isolate(search_terms$dList), isolate(input$search_keyword)))
+  #search_terms <- reactiveValues()
+  #observe({
+  #  if (input$plotbutton == 0) {
+  #    search_terms$dList <- c("coronavirus")
+  #  }
+  #  if(input$plotbutton > 0){
+  #    search_terms$dList <- unique(c(isolate(search_terms$dList), isolate(input$search_keyword)))
+  #  }
+  
+  #})
+  search_terms <- eventReactive(input$plotbutton, {
+    if (input$search_keyword != ""){
+      c("coronavirus", input$search_keyword)
+    } else {
+      c("coronavirus")
     }
   })
-  
   
   
   output$outPlot <- renderPlot({
-    p_gt <- plot_gt(search_terms$dList)
-    p_t <- plot_twitter(search_terms$dList)
+    p_gt <- plot_gt(search_terms(), time = "2020-01-21 2020-05-01")
+    p_t <- plot_twitter(search_terms())
     p_gt/p_t
   }, height = 500)
   
@@ -92,7 +100,12 @@ shinyServer(function(input, output) {
     ) +
       geom_line(size = 1.5) +
       labs(title = 'Trends in COVID Related Tweets') +
-      xlim(c(as.Date('2020-01-21'), as.Date('2020-05-06')))
+      xlim(c(as.Date('2020-01-21'), as.Date('2020-05-06'))) +
+      scale_color_manual(values = c("#bf9cf9", "#00ffd8", "#4998d4")) +
+      theme_dark() + theme(plot.background = element_rect(fill = "#303030"), 
+                           text = element_text(color = "white"),
+                           legend.background = element_rect(fill = "#303030"),
+                           axis.text = element_text(color = "#c2c2c2"))
   }
   
   plot_gt <- function(terms, time = "today 3-m", geo = "US") {
@@ -127,7 +140,12 @@ shinyServer(function(input, output) {
       ggplot(aes(x = date, y = hits, color = keyword)) +
         geom_line(size = 1.5) +
         labs(title = 'Trends in Google Searches') +
-        xlim(c(as.Date('2020-01-21'), as.Date('2020-05-06')))
+        xlim(c(as.Date('2020-01-21'), as.Date('2020-05-06'))) +
+        scale_color_manual(values = c("#bf9cf9", "#00ffd8", "#4998d4")) +
+        theme_dark() + theme(plot.background = element_rect(fill = "#303030"), 
+                             text = element_text(color = "white"),
+                             legend.background = element_rect(fill = "#303030"),
+                             axis.text = element_text(color = "#c2c2c2"))
     
     plot
   }

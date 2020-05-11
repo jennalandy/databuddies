@@ -21,7 +21,7 @@ navbarPage(list(img(src="databuddiesmedium.png"),
              textInput("search_keyword", h3("Trend search"), 
                        value = ""),
              actionButton("plotbutton", "Plot!"),
-             actionButton("addbutton", "Add search term"),
+             #actionButton("addbutton", "Add search term"),
              tags$div(id='inputList')
            ),
            
