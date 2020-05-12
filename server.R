@@ -15,6 +15,30 @@ shinyServer(function(input, output) {
     }
   })
   
+  show_events <- reactive({
+    if (input$show_dates == TRUE){
+      show_events <- 1
+    } else {
+      show_events <- 0
+    }  
+  })
+  
+  output$dates <- renderUI({
+    if (input$show_dates) {
+      HTML(paste("","01/21/2020 - First case in the U.S.", 
+               "02/29/2020 - First death in the U.S.",
+               "03/13/2020 - U.S. declares national emergency",
+               "03/17/2020 - First U.S. shelter in place order", sep="<br/>"))
+    } else {
+      HTML(paste(""))
+    }
+    
+  })
+  
+  first_us_case <- as.Date('2020-01-21')
+  first_us_death <- as.Date('2020-02-29')
+  us_national_emergency <- as.Date('2020-03-13')
+  first_us_shelter <- as.Date('2020-03-17')
   
   output$outPlot <- renderPlot({
     p_gt <- plot_gt(search_terms(), time = "2020-01-21 2020-05-01")
@@ -69,6 +93,10 @@ shinyServer(function(input, output) {
       geom_line(size = 1.5) +
       labs(title = 'Trends in COVID Related Tweets', y = '', x = '') +
       xlim(c(as.Date('2020-01-21'), as.Date('2020-05-06'))) +
+      geom_vline(xintercept = first_us_case, color = 'red', alpha=show_events()) +
+      geom_vline(xintercept = first_us_death, color = 'red', alpha=show_events()) +
+      geom_vline(xintercept = us_national_emergency, color = 'red', alpha=show_events()) +
+      geom_vline(xintercept = first_us_shelter, color = 'red',alpha=show_events()) +
       scale_color_manual(values = c("#bf9cf9", "#00ffd8", "#4998d4")) +
       theme_dark() + theme(
         plot.background = element_rect(fill = "#303030"), 
@@ -113,6 +141,10 @@ shinyServer(function(input, output) {
         geom_line(size = 1.5) +
         labs(title = 'Trends in Google Searches', y = '', x = '') +
         xlim(c(as.Date('2020-01-21'), as.Date('2020-05-06'))) +
+        geom_vline(xintercept = first_us_case, color = 'red', alpha=show_events()) +
+        geom_vline(xintercept = first_us_death, color = 'red', alpha=show_events()) +
+        geom_vline(xintercept = us_national_emergency, color = 'red', alpha=show_events()) +
+        geom_vline(xintercept = first_us_shelter, color = 'red',alpha=show_events()) +
         scale_color_manual(values = c("#bf9cf9", "#00ffd8", "#4998d4")) +
         theme_dark() + theme(
           plot.background = element_rect(fill = "#303030"), 

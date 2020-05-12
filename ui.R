@@ -1,4 +1,3 @@
-
 library(shiny)
 library(shinythemes)
 library(tidyverse)
@@ -20,9 +19,11 @@ navbarPage(list(img(src="databuddiesmedium.png"),
            sidebarPanel(
              textInput("search_keyword", h3("Trend search"), 
                        value = ""),
+             checkboxInput('show_dates', "Show Important Dates", value = FALSE, width='100%'),
              actionButton("plotbutton", "Plot!"),
              #actionButton("addbutton", "Add search term"),
-             tags$div(id='inputList')
+             tags$div(id='inputList'),
+             htmlOutput('dates')
            ),
            
            mainPanel(
