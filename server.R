@@ -67,11 +67,11 @@ shinyServer(function(input, output) {
     }
     
     tweets <- tweets %>%
-      select(keywords, 'date') %>%
+      dplyr::select(keywords, 'date') %>%
       group_by(date) %>%
       summarize_all(mean) %>%
       filter(date > as.Date('2020-01-01')) %>%
-      merge(covid_counts %>% select(date, cases), by = 'date')
+      merge(covid_counts %>% dplyr::select(date, cases), by = 'date')
     
     tweets
   }
@@ -93,11 +93,11 @@ shinyServer(function(input, output) {
       geom_line(size = 1.5) +
       labs(title = 'Trends in COVID Related Tweets', y = '', x = '') +
       xlim(c(as.Date('2020-01-21'), as.Date('2020-05-06'))) +
-      geom_vline(xintercept = first_us_case, color = 'red', alpha=show_events()) +
-      geom_vline(xintercept = first_us_death, color = 'red', alpha=show_events()) +
-      geom_vline(xintercept = us_national_emergency, color = 'red', alpha=show_events()) +
-      geom_vline(xintercept = first_us_shelter, color = 'red',alpha=show_events()) +
-      scale_color_manual(values = c("#bf9cf9", "#00ffd8", "#4998d4")) +
+      geom_vline(xintercept = first_us_case, color = '#d9d9d9', alpha=show_events()) +
+      geom_vline(xintercept = first_us_death, color = '#d9d9d9', alpha=show_events()) +
+      geom_vline(xintercept = us_national_emergency, color = '#d9d9d9', alpha=show_events()) +
+      geom_vline(xintercept = first_us_shelter, color = '#d9d9d9',alpha=show_events()) +
+      scale_color_manual(values = c("#4998d4", "#00ffd8", "#bf9cf9")) +
       theme_dark() + theme(
         plot.background = element_rect(fill = "#303030"), 
         text = element_text(color = "white"),
@@ -129,10 +129,10 @@ shinyServer(function(input, output) {
     google_data$date <- as.Date(google_data$date)
     
     google_data <- google_data %>% 
-      select(date, hits, keyword) %>%
+      dplyr::select(date, hits, keyword) %>%
       mutate(hits = hits/100) %>%
       pivot_wider(names_from = 'keyword', values_from = 'hits') %>%
-      merge(covid_counts %>% select(date, cases), all.x = TRUE) %>%
+      merge(covid_counts %>% dplyr::select(date, cases), all.x = TRUE) %>%
       mutate(cases = cases/max(cases, na.rm=TRUE)) %>%
       pivot_longer(c(terms, 'cases'), names_to = 'keyword', values_to = 'hits')
     
@@ -141,11 +141,11 @@ shinyServer(function(input, output) {
         geom_line(size = 1.5) +
         labs(title = 'Trends in Google Searches', y = '', x = '') +
         xlim(c(as.Date('2020-01-21'), as.Date('2020-05-06'))) +
-        geom_vline(xintercept = first_us_case, color = 'red', alpha=show_events()) +
-        geom_vline(xintercept = first_us_death, color = 'red', alpha=show_events()) +
-        geom_vline(xintercept = us_national_emergency, color = 'red', alpha=show_events()) +
-        geom_vline(xintercept = first_us_shelter, color = 'red',alpha=show_events()) +
-        scale_color_manual(values = c("#bf9cf9", "#00ffd8", "#4998d4")) +
+        geom_vline(xintercept = first_us_case, color = '#d9d9d9', alpha=show_events()) +
+        geom_vline(xintercept = first_us_death, color = '#d9d9d9', alpha=show_events()) +
+        geom_vline(xintercept = us_national_emergency, color = '#d9d9d9', alpha=show_events()) +
+        geom_vline(xintercept = first_us_shelter, color = '#d9d9d9',alpha=show_events()) +
+        scale_color_manual(values = c("#4998d4", "#00ffd8", "#bf9cf9")) +
         theme_dark() + theme(
           plot.background = element_rect(fill = "#303030"), 
           text = element_text(color = "white"),
