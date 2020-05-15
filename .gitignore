@@ -1,3 +1,4 @@
+app/sample_tweets.csv
 tweets/*
 .DS_Store
 *tweets.jsonl
