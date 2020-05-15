@@ -1,6 +1,7 @@
 library(httr)
 library(jsonlite)
 library(stringr)
+library(dplyr)
 library(tidyverse)
 library(comprehenr)
 
@@ -128,12 +129,12 @@ get_sample_tweet_ids <- function(perc = 0.01) {
 }
 
 get_sample_tweet_ids()
-#count_tweet_ids()
-  
+
+# write all tweet ids to a text file
 to_list(
   for(tweet in tweet_ids) 
     tweet$tweet_ids
 ) %>%
   unlist() %>%
   paste(collapse = '\n') %>%
-  writeLines('tweets/tweets.txt')
+  writeLines('tweets.txt')

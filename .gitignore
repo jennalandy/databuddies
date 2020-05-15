@@ -1,3 +1,7 @@
+*.html
+twitter_data/tweets.txt
+twitter_data/twarc.log
+twitter_data/tweets_to_df.ipynb
 app/sample_tweets.csv
 tweets/*
 .DS_Store
