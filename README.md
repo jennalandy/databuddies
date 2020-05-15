@@ -14,6 +14,6 @@ This app can be used to investigate how social media trends and Google searches 
 Press the "Plot!" button to start plotting. To add terms to the graph, type it in  the "Trend Search" box and press the "Plot!" button. When no trend search is inputted, the graph will show the Google and Twitter trends for "coronavirus" along with the trend line for number of cases. The "Show Important Dates" checkbox graphs markers for dates that could give context to some of the trends.
 
 ## Data Sources
-- [Emily Chen's repository of pre-collected tweets related to COVID19](echen102/COVID-19-TweetIDs)
+- [Emily Chen's repository of pre-collected tweets related to COVID19](https://github.com/echen102/COVID-19-TweetIDs)
 - [COVID-19 Data Repository by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University](https://github.com/CSSEGISandData/COVID-19): number of daily worldwide cases
 - [Google Trends](https://trends.google.com/trends/) via the [gtrendsR package for R](https://www.rdocumentation.org/packages/gtrendsR/versions/1.4.4)
